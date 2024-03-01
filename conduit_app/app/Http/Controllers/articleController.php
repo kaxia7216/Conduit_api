@@ -60,7 +60,15 @@ class articleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        //１件の記事とそのタグの取得
+        $article = Article::firstWhere('id', $id);
+        $setTags = $article->tags()->get();
+
+        //コメントの取得
+        $comments = $article->comments()->get();
+
+        // return response()->json(["article" => $article, "tags" => $setTags, "comments" => $comments]);
+        return response()->json(["article" => $article]);
     }
 
     /**
