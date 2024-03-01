@@ -18,9 +18,19 @@ Route::get('/', function () {
 });
 
 Route::get('/create', function () {
-    return view('create-edit');
+    $editMode = 0;
+    return view('create-edit', compact('editMode'));
 });
 
 Route::post('/create', function () {
     return view('home');
+});
+
+Route::get('/article/{id}', function ($id) {
+    return view('article', compact('id'));
+});
+
+Route::get('/edit/{id}', function ($id) {
+    $editMode = 1;
+    return view('create-edit', compact('editMode', 'id'));
 });
