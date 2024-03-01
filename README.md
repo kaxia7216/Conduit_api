@@ -1,4 +1,7 @@
 Laravel Sailを使用して、"Conduit"を作成しました。
+前回とは違い、一部の機能をAPIバージョンにしました。
+
+前回のリポジトリ：https://github.com/kaxia7216/Conduit
 
 ## 使用環境
 
@@ -12,11 +15,11 @@ Laravel Sailを使用して、"Conduit"を作成しました。
 
 本リポジトリを任意のディレクトリにクローンします。
 ```
-git clone https://github.com/kaxia7216/Conduit.git
+git clone https://github.com/kaxia7216/Conduit_api.git
 ```
 conduitディレクトリに移動します。
 ```
-cd Conduit/Conduit
+cd Conduit_api/conduit_app
 ```
 
 cloneした時点では、起動するためのvenderフォルダと.envファイルがないため、それぞれ作成します。
@@ -31,7 +34,7 @@ cp .env.example .env
 APP_DEBUG=false
 APP_URL=http://localhost
 DB_HOST=mysql
-DB_DATABASE=conduit
+DB_DATABASE=laravel
 DB_USERNAME=root
 DB_PASSWORD=password
 MEMCACHED_HOST=memcached
