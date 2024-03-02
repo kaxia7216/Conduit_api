@@ -58,7 +58,7 @@ function fetchSpecifiedArticle(id) {
         articleTitle.innerHTML = `
             <h1>${article.title}</h1>
             <form id="article-edit" action="/edit/${article.id}" method="GET"></form>
-            <form id="article-delete" action="/delete/${article.id}" method="DELETE"></form>
+            <form id="article-delete" action="/delete/${article.id}" method="GET"></form>
             <div class="article-meta">
                 <div class="info">
                     <span class="date">${article.created_at}</span>
@@ -114,8 +114,17 @@ function editArticle(id){
       });
 }
 
-function deleteArticle(){
-    //
+function deleteArticle(id){
+    $status = confirm('記事を削除しますか？')
+
+    if($status === true){
+        fetch(`${api}/delete/${id}`, {
+            method: 'DELETE'
+          })
+          .then(() => {
+            fetchArticles();
+          });
+    }
 }
 
 fetchArticles();

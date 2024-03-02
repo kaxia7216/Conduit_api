@@ -38,3 +38,7 @@ Route::get('/edit/{id}', function ($id) {
 Route::get('/edit', function () {
     return view('home');
 });
+
+Route::get('/delete/{id}', function () {
+    return view('home');
+});

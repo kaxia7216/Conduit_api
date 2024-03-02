@@ -110,6 +110,13 @@ class articleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //タグに対応するレコードを取得
+        $article = Article::firstWhere('id', $id);
+        $article->delete();
+
+        //取得したレコードのタグの紐づけを解除(中間テーブルの対応するレコードが削除)
+        // $article->tags()->detach($articleTag_id);
+
+        return response()->json([], 204);
     }
 }
