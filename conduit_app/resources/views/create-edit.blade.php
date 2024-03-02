@@ -8,7 +8,7 @@
           <!-- <li>That title is required</li> -->
         </ul>
         @if($editMode === 1)
-          <form method="PUT" action="/edit">
+          <form method="get" action="/edit">
             <fieldset>
             @csrf
               <fieldset class="form-group">

@@ -58,7 +58,7 @@ function fetchSpecifiedArticle(id) {
         articleTitle.innerHTML = `
             <h1>${article.title}</h1>
             <form id="article-edit" action="/edit/${article.id}" method="GET"></form>
-            <form id="article-delete" action="/delete/${article.id}" method="DELETE"></form>
+            <form id="article-delete" action="/delete/${article.id}" method="GET"></form>
             <div class="article-meta">
                 <div class="info">
                     <span class="date">${article.created_at}</span>
@@ -95,12 +95,36 @@ function fetchSpecifiedArticleForEdit(id){
     });
 }
 
-function editArticle(){
-    //
+function editArticle(id){
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const body = document.getElementById('body').value;
+    const tags = document.getElementById('tagList').value;
+    const tagList = tags.split(' ');
+
+    const editData = { article: { title, description, body, tagList } };
+    fetch(`${api}/edit/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editData)
+    })
+    .then(response => response.json())
+    .then(() => {
+        fetchArticles();
+      });
 }
 
-function deleteArticle(){
-    //
+function deleteArticle(id){
+    $status = confirm('記事を削除しますか？')
+
+    if($status === true){
+        fetch(`${api}/delete/${id}`, {
+            method: 'DELETE'
+          })
+          .then(() => {
+            fetchArticles();
+          });
+    }
 }
 
 fetchArticles();

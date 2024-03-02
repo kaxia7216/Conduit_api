@@ -34,3 +34,11 @@ Route::get('/edit/{id}', function ($id) {
     $editMode = 1;
     return view('create-edit', compact('editMode', 'id'));
 });
+
+Route::get('/edit', function () {
+    return view('home');
+});
+
+Route::get('/delete/{id}', function () {
+    return view('home');
+});

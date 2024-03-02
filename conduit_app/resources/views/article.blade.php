@@ -64,10 +64,10 @@
                         <i class="ion-heart"></i>
                         &nbsp; Favorite Article <span class="counter">(29)</span>
                     </button> -->
-                    <button class="btn btn-sm btn-outline-secondary">
+                    <button class="btn btn-sm btn-outline-secondary" form="article-edit">
                         <i class="ion-edit"></i> Edit Article
                     </button>
-                    <button class="btn btn-sm btn-outline-danger">
+                    <button class="btn btn-sm btn-outline-danger" form="article-delete" onclick="deleteArticle({{$id}})">
                         <i class="ion-trash-a"></i> Delete Article
                     </button>
                 </div>
