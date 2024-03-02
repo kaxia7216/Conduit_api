@@ -75,17 +75,18 @@
 
             <div class="row">
                 <div class="col-xs-12 col-md-8 offset-md-2">
-                        <form class="card comment-form">
+                    <form class="card comment-form" method="get" action="">
                         <div class="card-block">
-                            <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+                            <textarea id="post-comment" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
                         </div>
                         <div class="card-footer">
                             <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-                            <button class="btn btn-sm btn-primary">Post Comment</button>
+                            <button class="btn btn-sm btn-primary" onclick="addComment({{$id}})">Post Comment</button>
                         </div>
-                        </form>
+                    </form>
 
-                        <div class="card">
+                    <div id="comments"></div>
+                    <!-- <div class="card">
                         <div class="card-block">
                             <p class="card-text">
                             With supporting text below as a natural lead-in to additional content.
@@ -99,9 +100,9 @@
                             <a href="/profile/jacob-schmidt" class="comment-author">Jacob Schmidt</a>
                             <span class="date-posted">Dec 29th</span>
                         </div>
-                        </div>
+                    </div>
 
-                        <div class="card">
+                    <div class="card">
                         <div class="card-block">
                             <p class="card-text">
                             With supporting text below as a natural lead-in to additional content.
@@ -118,7 +119,7 @@
                             <i class="ion-trash-a"></i>
                             </span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -134,5 +135,6 @@
     </footer>
     <script src="/js/script.js"></script>
     <script type="text/javascript">fetchSpecifiedArticle({{$id}})</script>
+    <script type="text/javascript">fetchArticleComments({{$id}})</script>
   </body>
 </html>

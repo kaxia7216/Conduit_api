@@ -24,3 +24,6 @@ Route::get('/articles', [articleController::class, 'index']);
 Route::get('/article/{id}', [articleController::class, 'show']);
 Route::put('/edit/{id}', [articleController::class, 'update']);
 Route::delete('/delete/{id}', [articleController::class, 'destroy']);
+Route::post('/createComment/{id}', [articleController::class, 'addComment']);
+Route::get('/comments/{id}', [articleController::class, 'getComments']);
+Route::delete('/deleteComment/{id}', [articleController::class, 'destroyComment']);
