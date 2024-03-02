@@ -95,8 +95,23 @@ function fetchSpecifiedArticleForEdit(id){
     });
 }
 
-function editArticle(){
-    //
+function editArticle(id){
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const body = document.getElementById('body').value;
+    const tags = document.getElementById('tagList').value;
+    const tagList = tags.split(' ');
+
+    const editData = { article: { title, description, body, tagList } };
+    fetch(`${api}/edit/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(editData)
+    })
+    .then(response => response.json())
+    .then(() => {
+        fetchArticles();
+      });
 }
 
 function deleteArticle(){

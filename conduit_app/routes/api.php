@@ -22,3 +22,4 @@ use App\Http\Controllers\articleController;
 Route::post('/create', [articleController::class, 'store']);
 Route::get('/articles', [articleController::class, 'index']);
 Route::get('/article/{id}', [articleController::class, 'show']);
+Route::put('/edit/{id}', [articleController::class, 'update']);

@@ -47,7 +47,7 @@ class articleController extends Controller
             foreach ($addTags as $addTag) {
                 $tags = Tag::firstOrCreate(['name' => $addTag]);
                 $tag_id = Tag::where('name', $addTag)->get(['id']);
-                $article->tags()->attach($tag_id);
+                $article->tags()->sync($tag_id);
                 $tags = null;
             }
         }
@@ -77,6 +77,32 @@ class articleController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $input = $request->getContent();
+        $articleData = json_decode($input, true);
+
+        $updateArticle = Article::where('id', $id);
+        $updateArticle->update(['title' => $articleData['article']['title']]);
+        $updateArticle->update(['description' => $articleData['article']['theme']]);
+        $updateArticle->update(['body' => $articleData['article']['text']]);
+
+        $article = Article::firstWhere('id', $id);
+
+        $editTags = $articleData['article']['tagList'];
+        if ($editTags === []) {
+            //何もしない
+        } else {
+            //タグ名があればidを取得、なければDBに登録
+            $tagList = explode(" ", $editTags);
+
+            foreach ($tagList as $tag) {
+                $tags = Tag::firstOrCreate(['name' => $tag]);
+                $tag_id = Tag::where('name', $tag)->get(['id']);
+                $article->tags()->sync($tag_id);
+                $tags = null;
+            }
+        }
+
+        return response()->json(["article" => $article]);
     }
 
     /**
