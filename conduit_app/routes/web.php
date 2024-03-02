@@ -42,3 +42,11 @@ Route::get('/edit', function () {
 Route::get('/delete/{id}', function () {
     return view('home');
 });
+
+Route::get('/createComment/{id}', function ($id) {
+    return view('article', compact('id'));
+});
+
+Route::get('/deleteComment/{id}', function ($id) {
+    return view('article', compact('id'));
+});

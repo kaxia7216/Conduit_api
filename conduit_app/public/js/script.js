@@ -127,4 +127,55 @@ function deleteArticle(id){
     }
 }
 
+function addComment(id){
+    const comment = document.getElementById('post-comment').value;
+
+    fetch(`${api}/createComment/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ "comment" : { comment } })
+    })
+    .then(response => response.json())
+    .then(() => {
+        document.getElementById('post-comment').value = '';
+    });
+}
+
+function fetchArticleComments(id){
+    fetch(`${api}/comments/${id}`)
+    .then(response => response.json())
+    .then(data => {
+        const commentList = document.getElementById('comments');
+        commentList.innerHTML = '';
+
+        for (let comment of data.comments) {
+            let commentItem = document.createElement('div');
+            commentItem.className = 'card';
+            commentItem.innerHTML = `
+                <div class="card-block">
+                    <p class="card-text">
+                    ${comment.body}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <span class="date-posted">${comment.created_at}</span>
+                    <span class="mod-options">
+                        <a href="/deleteComment/${id}"><i class="ion-trash-a" onclick="deleteComment(${comment.id})"></i></a>
+                    </span>
+                </div>
+            `;
+            commentList.appendChild(commentItem);
+        }
+    });
+}
+
+function deleteComment(id){
+    fetch(`${api}/deleteComment/${id}`, {
+        method: 'DELETE'
+      })
+    .then(() => {
+        fetchArticleComments();
+      });
+}
+
 fetchArticles();
