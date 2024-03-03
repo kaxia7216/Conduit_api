@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Tag;
 
 class articleController extends Controller
 {
@@ -40,15 +41,19 @@ class articleController extends Controller
         $article->body = $articleData['article']['body'];
         $article->save();
 
+        $article = null;
+        $article = new Article();
+        $article_id = $article->latest('id')->first();
+
         $addTags = $articleData['article']['tagList'];
-        if ($addTags === []) {
+        if ($addTags === "") {
             //何もしない
         } else {
             //タグを記事と紐づけ、タグリストに登録
             foreach ($addTags as $addTag) {
                 $tags = Tag::firstOrCreate(['name' => $addTag]);
                 $tag_id = Tag::where('name', $addTag)->get(['id']);
-                $article->tags()->sync($tag_id);
+                $article_id->tags()->attach($tag_id);
                 $tags = null;
             }
         }
@@ -89,16 +94,14 @@ class articleController extends Controller
         $article = Article::firstWhere('id', $id);
 
         $editTags = $articleData['article']['tagList'];
-        if ($editTags === []) {
+        if ($editTags === '') {
             //何もしない
         } else {
             //タグ名があればidを取得、なければDBに登録
-            $tagList = explode(" ", $editTags);
-
-            foreach ($tagList as $tag) {
+            foreach ($editTags as $tag) {
                 $tags = Tag::firstOrCreate(['name' => $tag]);
                 $tag_id = Tag::where('name', $tag)->get(['id']);
-                $article->tags()->sync($tag_id);
+                $article->tags()->attach($tag_id);
                 $tags = null;
             }
         }
