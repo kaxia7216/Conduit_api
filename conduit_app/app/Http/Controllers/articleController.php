@@ -14,7 +14,7 @@ class articleController extends Controller
      */
     public function index()
     {
-        //
+        //一覧取得
         $tagRanking = Tag::withCount('articles')
         ->orderBy('articles_count', 'desc')
         ->limit(10)
@@ -75,11 +75,7 @@ class articleController extends Controller
         $article = Article::firstWhere('id', $id);
         $setTags = $article->tags()->get();
 
-        //コメントの取得
-        // $comments = $article->comments()->get();
-
         return response()->json(["article" => $article, "tags" => $setTags]);
-        // return response()->json(["article" => $article]);
     }
 
     /**
@@ -87,18 +83,19 @@ class articleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //記事の更新
         $input = $request->getContent();
         $articleData = json_decode($input, true);
 
         $updateArticle = Article::where('id', $id);
         $updateArticle->update(['title' => $articleData['article']['title']]);
-        $updateArticle->update(['description' => $articleData['article']['theme']]);
-        $updateArticle->update(['body' => $articleData['article']['text']]);
+        $updateArticle->update(['description' => $articleData['article']['description']]);
+        $updateArticle->update(['body' => $articleData['article']['body']]);
 
         $article = Article::firstWhere('id', $id);
 
         $editTags = $articleData['article']['tagList'];
+
         if ($editTags === '') {
             //何もしない
         } else {

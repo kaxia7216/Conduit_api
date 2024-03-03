@@ -41,8 +41,6 @@ function fetchArticles() {
                 <p>${article.description}</p>
                 <span>Read more...</span>
                 <ul class="tag-list" id="article-tag-${article.id}">
-                    <li class="tag-default tag-pill tag-outline">realworld</li>
-                    <li class="tag-default tag-pill tag-outline">implementations</li>
                 </ul>
             </a>
         `;
