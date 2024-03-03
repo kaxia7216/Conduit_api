@@ -27,3 +27,4 @@ Route::delete('/delete/{id}', [articleController::class, 'destroy']);
 Route::post('/createComment/{id}', [articleController::class, 'addComment']);
 Route::get('/comments/{id}', [articleController::class, 'getComments']);
 Route::delete('/deleteComment/{id}', [articleController::class, 'destroyComment']);
+Route::delete('/tag-delete/{article_id}&{tag_id}', [articleController::class, 'deleteTagFromArticle']);

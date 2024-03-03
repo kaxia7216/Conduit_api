@@ -81,7 +81,7 @@
         <div class="sidebar">
           <p>Popular Tags</p>
 
-          <div class="tag-list">
+          <div class="tag-list" id="tag-Rank">
             <a href="" class="tag-pill tag-default">programming</a>
             <a href="" class="tag-pill tag-default">javascript</a>
             <a href="" class="tag-pill tag-default">emberjs</a>

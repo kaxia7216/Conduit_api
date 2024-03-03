@@ -27,7 +27,7 @@
               </fieldset>
               <fieldset class="form-group">
                 <input id="tagList" type="text" class="form-control" placeholder="Enter tags" />
-                <div class="tag-list">
+                <div class="tag-list" id="added-Tags">
                   <span class="tag-default tag-pill"> <i class="ion-close-round"></i> tag </span>
                 </div>
               </fieldset>
@@ -56,9 +56,9 @@
               </fieldset>
               <fieldset class="form-group">
                 <input id="tagList" type="text" class="form-control" placeholder="Enter tags" />
-                <div class="tag-list">
+                <!-- <div class="tag-list">
                   <span class="tag-default tag-pill"> <i class="ion-close-round"></i> tag </span>
-                </div>
+                </div> -->
               </fieldset>
               <button class="btn btn-lg pull-xs-right btn-primary" type="submit" onclick="addArticle()">
                 Publish Article

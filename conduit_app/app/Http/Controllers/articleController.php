@@ -15,7 +15,12 @@ class articleController extends Controller
     public function index()
     {
         //
-        return response()->json(["articles" => Article::all()]);
+        $tagRanking = Tag::withCount('articles')
+        ->orderBy('articles_count', 'desc')
+        ->limit(10)
+        ->get();
+
+        return response()->json(["articles" => Article::all(), "tagRank" => $tagRanking]);
     }
 
     /**
@@ -71,10 +76,10 @@ class articleController extends Controller
         $setTags = $article->tags()->get();
 
         //コメントの取得
-        $comments = $article->comments()->get();
+        // $comments = $article->comments()->get();
 
-        // return response()->json(["article" => $article, "tags" => $setTags, "comments" => $comments]);
-        return response()->json(["article" => $article]);
+        return response()->json(["article" => $article, "tags" => $setTags]);
+        // return response()->json(["article" => $article]);
     }
 
     /**
@@ -157,5 +162,16 @@ class articleController extends Controller
         $comment->delete();
 
         return response()->json([], 204);
+    }
+
+    public function deleteTagFromArticle(string $article_id, string $tag_id)
+    {
+        //対象記事のタグの紐づけ解除
+        $article = Article::firstWhere('id', $article_id);
+
+        //取得したレコードのタグの紐づけを解除(中間テーブルの対応するレコードが削除)
+        $article->tags()->detach($tag_id);
+
+        return response()->json([ 'detachedArticle' => $article ]);
     }
 }
