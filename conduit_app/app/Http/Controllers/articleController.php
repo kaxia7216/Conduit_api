@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Comment;
+use App\Models\Tag;
 
 class articleController extends Controller
 {
@@ -13,8 +14,13 @@ class articleController extends Controller
      */
     public function index()
     {
-        //
-        return response()->json(["articles" => Article::all()]);
+        //一覧取得
+        $tagRanking = Tag::withCount('articles')
+        ->orderBy('articles_count', 'desc')
+        ->limit(10)
+        ->get();
+
+        return response()->json(["articles" => Article::all(), "tagRank" => $tagRanking]);
     }
 
     /**
@@ -40,15 +46,19 @@ class articleController extends Controller
         $article->body = $articleData['article']['body'];
         $article->save();
 
+        $article = null;
+        $article = new Article();
+        $article_id = $article->latest('id')->first();
+
         $addTags = $articleData['article']['tagList'];
-        if ($addTags === []) {
+        if ($addTags === "") {
             //何もしない
         } else {
             //タグを記事と紐づけ、タグリストに登録
             foreach ($addTags as $addTag) {
                 $tags = Tag::firstOrCreate(['name' => $addTag]);
                 $tag_id = Tag::where('name', $addTag)->get(['id']);
-                $article->tags()->sync($tag_id);
+                $article_id->tags()->attach($tag_id);
                 $tags = null;
             }
         }
@@ -65,11 +75,7 @@ class articleController extends Controller
         $article = Article::firstWhere('id', $id);
         $setTags = $article->tags()->get();
 
-        //コメントの取得
-        $comments = $article->comments()->get();
-
-        // return response()->json(["article" => $article, "tags" => $setTags, "comments" => $comments]);
-        return response()->json(["article" => $article]);
+        return response()->json(["article" => $article, "tags" => $setTags]);
     }
 
     /**
@@ -77,28 +83,27 @@ class articleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        //記事の更新
         $input = $request->getContent();
         $articleData = json_decode($input, true);
 
         $updateArticle = Article::where('id', $id);
         $updateArticle->update(['title' => $articleData['article']['title']]);
-        $updateArticle->update(['description' => $articleData['article']['theme']]);
-        $updateArticle->update(['body' => $articleData['article']['text']]);
+        $updateArticle->update(['description' => $articleData['article']['description']]);
+        $updateArticle->update(['body' => $articleData['article']['body']]);
 
         $article = Article::firstWhere('id', $id);
 
         $editTags = $articleData['article']['tagList'];
-        if ($editTags === []) {
+
+        if ($editTags === '') {
             //何もしない
         } else {
             //タグ名があればidを取得、なければDBに登録
-            $tagList = explode(" ", $editTags);
-
-            foreach ($tagList as $tag) {
+            foreach ($editTags as $tag) {
                 $tags = Tag::firstOrCreate(['name' => $tag]);
                 $tag_id = Tag::where('name', $tag)->get(['id']);
-                $article->tags()->sync($tag_id);
+                $article->tags()->attach($tag_id);
                 $tags = null;
             }
         }
@@ -154,5 +159,16 @@ class articleController extends Controller
         $comment->delete();
 
         return response()->json([], 204);
+    }
+
+    public function deleteTagFromArticle(string $article_id, string $tag_id)
+    {
+        //対象記事のタグの紐づけ解除
+        $article = Article::firstWhere('id', $article_id);
+
+        //取得したレコードのタグの紐づけを解除(中間テーブルの対応するレコードが削除)
+        $article->tags()->detach($tag_id);
+
+        return response()->json([ 'detachedArticle' => $article ]);
     }
 }

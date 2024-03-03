@@ -80,7 +80,7 @@
                             <textarea id="post-comment" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
                         </div>
                         <div class="card-footer">
-                            <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
+                            <!-- <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" /> -->
                             <button class="btn btn-sm btn-primary" onclick="addComment({{$id}})">Post Comment</button>
                         </div>
                     </form>

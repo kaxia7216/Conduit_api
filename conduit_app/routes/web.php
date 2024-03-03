@@ -50,3 +50,9 @@ Route::get('/createComment/{id}', function ($id) {
 Route::get('/deleteComment/{id}', function ($id) {
     return view('article', compact('id'));
 });
+
+Route::get('/tag-delete/{article_id}&{tag_id}', function ($article_id) {
+    $id = $article_id;
+    $editMode = 1;
+    return view('create-edit', compact('editMode', 'id'));
+});
