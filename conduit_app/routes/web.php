@@ -8,51 +8,13 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
 |
 */
 
 Route::get('/', function () {
-    return view('home');
+    return ['Laravel' => app()->version()];
 });
 
-Route::get('/create', function () {
-    $editMode = 0;
-    return view('create-edit', compact('editMode'));
-});
-
-Route::post('/create', function () {
-    return view('home');
-});
-
-Route::get('/article/{id}', function ($id) {
-    return view('article', compact('id'));
-});
-
-Route::get('/edit/{id}', function ($id) {
-    $editMode = 1;
-    return view('create-edit', compact('editMode', 'id'));
-});
-
-Route::get('/edit', function () {
-    return view('home');
-});
-
-Route::get('/delete/{id}', function () {
-    return view('home');
-});
-
-Route::get('/createComment/{id}', function ($id) {
-    return view('article', compact('id'));
-});
-
-Route::get('/deleteComment/{id}', function ($id) {
-    return view('article', compact('id'));
-});
-
-Route::get('/tag-delete/{article_id}&{tag_id}', function ($article_id) {
-    $id = $article_id;
-    $editMode = 1;
-    return view('create-edit', compact('editMode', 'id'));
-});
+require __DIR__.'/auth.php';

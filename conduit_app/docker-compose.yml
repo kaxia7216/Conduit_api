@@ -59,6 +59,14 @@ services:
             PMA_HOST: mysql
         networks:
             - sail
+    frontend:
+        image: "node"
+        volumes:
+            - "./frontend:/var/www/html"
+        working_dir: "/var/www/html"
+        ports:
+            - "3000:3000"
+        command: bash -c "npm install && npm run dev"
 networks:
     sail:
         driver: bridge
