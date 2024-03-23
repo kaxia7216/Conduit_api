@@ -28,7 +28,7 @@ const Editor = () => {
     const tagList = tagsStr.split(' ');
     const putData = { article: { title, description, body, tagList } };
 
-    const res = await axios.put(`http://localhost/api/edit/${article_id}`, putData);
+    const res = await axios.put(`http://localhost/api/edit/${article_id}`, putData, {withCredentials: true});
   };
 
   const handlePut = async (e) => {
@@ -53,7 +53,7 @@ const Editor = () => {
             {/* <ul className="error-messages">
               <!-- <li>That title is required</li> -->
             </ul> */}
-            <form onSubmit={handlePut}>
+            <form onSubmit={handlePut} key={data?.article.id}>
               <fieldset>
                 <fieldset className="form-group">
                   <input
