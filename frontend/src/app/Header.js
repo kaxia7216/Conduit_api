@@ -11,7 +11,7 @@ const Header = () => {
 						<Link className="nav-link active" href="/">Home</Link>
 					</li>
 					<li className="nav-item">
-						<Link className="nav-link" href="/editor"> <i className="ion-compose"></i>&nbsp;New Article </Link>
+						<Link className="nav-link" href='/editor/new'> <i className="ion-compose"></i>&nbsp;New Article </Link>
 					</li>
 					{/* <li className="nav-item">
 						<Link className="nav-link" href="/settings"> <i className="ion-gear-a"></i>&nbsp;Settings </Link>
