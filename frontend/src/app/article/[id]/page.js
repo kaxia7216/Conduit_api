@@ -1,11 +1,14 @@
 'use client';
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
+import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const Article = () => {
   const getParams = useSearchParams();
-  const articleId = getParams.get('id');
+  // const articleId = getParams.get('id');
+  const router = useRouter();
+  const [ articleId, setArticleId ] = useState(getParams.get('id'));
   const [detailArticle, setdetailArticle] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [commentList, setCommentList] = useState([]);
@@ -22,6 +25,23 @@ const Article = () => {
     const result = await resComment.json();
 
     return result;
+  };
+
+  const deleteArticle = async (article_id) => {
+    const url = `http://localhost/api/delete/${article_id}`;
+
+    try {
+      await axios.delete(url, {withCredentials: true});
+    } catch(error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async () => {
+    await deleteArticle(articleId);
+
+    router.push('/');
+    router.refresh();
   };
 
   useEffect(() => {
@@ -65,9 +85,9 @@ const Article = () => {
               &nbsp; Favorite Post <span className="counter">(29)</span>
             </button> */}
             <button className="btn btn-sm btn-outline-secondary">
-              <i className="ion-edit"></i> Edit Article
+              <Link href={{ pathname:`/editor/edit`, query: { id: detailArticle.id }}}><i className="ion-edit"></i>Edit Article</Link>
             </button>
-            <button className="btn btn-sm btn-outline-danger">
+            <button className="btn btn-sm btn-outline-danger" onClick={handleDelete}>
               <i className="ion-trash-a"></i> Delete Article
             </button>
           </div>
@@ -105,10 +125,10 @@ const Article = () => {
               <i className="ion-heart"></i>
               &nbsp; Favorite Article <span className="counter">(29)</span>
             </button> */}
-            <button className="btn btn-sm btn-outline-secondary" form="article-edit">
-              <i className="ion-edit"></i> Edit Article
+            <button className="btn btn-sm btn-outline-secondary">
+              <Link href={{ pathname:`/editor/edit`, query: { id: detailArticle.id }}}><i className="ion-edit"></i>Edit Article</Link>
             </button>
-            <button className="btn btn-sm btn-outline-danger" form="article-delete">
+            <button className="btn btn-sm btn-outline-danger" onClick={handleDelete}>
               <i className="ion-trash-a"></i> Delete Article
             </button>
           </div>
