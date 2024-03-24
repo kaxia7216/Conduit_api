@@ -24,7 +24,7 @@ cd Conduit_api/conduit_app
 
 cloneした時点では、起動するためのvenderフォルダと.envファイルがないため、それぞれ作成します。
 
-.envファイルは .env.exampleファイルをコピーして.envファイルにリネームして使用してください。
+laravelプロジェクトフォルダ以下の .envファイルは .env.exampleファイルをコピーして.envファイルにリネームして使用してください。
 ```
 cp .env.example .env
 ```
@@ -51,9 +51,22 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
+Next.jsプロジェクトをクローンしてきます。
+合わせて.env.exampleファイルもリネームします。
+```
+cd Conduit_api/conduit_app/
+
+git clone git clone https://github.com/laravel/breeze-next.git frontend
+
+mv frontend/.env.example frontend/.env.local
+```
+
+リポジトリ直下の/frontend/src/appフォルダで
+プロジェクト内のfrontend/src/appを上書きしてください。
+
 sail コマンドを入力します。
 ```
 ./vender/bin/sail up -d
 ```
 
-[localhost](http://localhost) でブラウザに表示することができます。
+[localhost:3000](http://localhost:3000) でブラウザに表示することができます。
