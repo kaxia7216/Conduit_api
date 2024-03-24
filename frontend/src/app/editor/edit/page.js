@@ -16,11 +16,10 @@ const Editor = () => {
   const getParams = useSearchParams();
   const article_id = getParams.get('id');
 
-
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
   const [ body, setBody ] = useState('');
-  const [ newTags, setnNewTags ] = useState('');
+  const [ newTags, setNewTags ] = useState('');
   const { data, error, isLoading } = useSWR(`http://localhost/api/article/${article_id}`, fetcher);
 
   const putArticle = async (article_id, title, description, body, tags) => {
@@ -88,11 +87,11 @@ const Editor = () => {
                     type="text"
                     className="form-control"
                     placeholder="Enter tags"
-                    onChange={(e) => setnNewTags(e.target.value)}
+                    onChange={(e) => setNewTags(e.target.value)}
                   />
                   <div className="tag-list">
-                    {data?.tags.map((tag) => (
-                      <span className="tag-default tag-pill" key={tag.id}> <i className="ion-close-round"></i> {tag.name} </span>
+                    {data?.tags.map((tag, index) => (
+                      <span className="tag-default tag-pill" key={index}> <i className="ion-close-round"></i> {tag.name} </span>
                     ))}
                   </div>
                 </fieldset>

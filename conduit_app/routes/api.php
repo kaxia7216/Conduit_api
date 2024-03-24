@@ -19,13 +19,14 @@ use App\Http\Controllers\articleController;
 //     return $request->user();
 // });
 
-//後でmiddlewareで統一すること
-Route::post('/create', [articleController::class, 'store']);
-Route::get('/articles', [articleController::class, 'index']);
-Route::get('/article/{id}', [articleController::class, 'show']);
-Route::put('/edit/{id}', [articleController::class, 'update']);
-Route::delete('/delete/{id}', [articleController::class, 'destroy']);
-Route::post('/createComment/{id}', [articleController::class, 'addComment']);
-Route::get('/comments/{id}', [articleController::class, 'getComments']);
-Route::delete('/deleteComment/{id}', [articleController::class, 'destroyComment']);
-Route::delete('/tag-delete/{article_id}&{tag_id}', [articleController::class, 'deleteTagFromArticle']);
+Route::controller(articleController::class)->group(function () {
+    Route::post('/create', 'store');
+    Route::get('/articles', 'index');
+    Route::get('/article/{id}', 'show');
+    Route::put('/edit/{id}', 'update');
+    Route::delete('/delete/{id}', 'destroy');
+    Route::post('/createComment/{id}', 'addComment');
+    Route::get('/comments/{id}', 'getComments');
+    Route::delete('/deleteComment/{id}', 'destroyComment');
+    Route::delete('/tag-delete/{article_id}&{tag_id}', 'deleteTagFromArticle');
+});

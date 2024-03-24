@@ -96,7 +96,7 @@ class articleController extends Controller
 
         $editTags = $articleData['article']['tagList'];
 
-        if ($editTags === '') {
+        if ($editTags === "") {
             //何もしない
         } else {
             //タグ名があればidを取得、なければDBに登録
