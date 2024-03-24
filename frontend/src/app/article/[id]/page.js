@@ -48,12 +48,14 @@ const Article = () => {
     const comment = newComment;
     const postCommentData = { comment: { comment } };
 
-    await axios.post(`http://localhost/api/createComment/${article_id}`, postCommentData, {withCredentials: true});
+    const res = await axios.post(`http://localhost/api/createComment/${article_id}`, postCommentData, {withCredentials: true});
+    
+    const nowCommentList = [...commentList, res.data.comment];
+    setCommentList(nowCommentList);
+    setNewComment('');
   };
 
   const handlePostComment = async (e) => {
-    const nowCommentList = [...commentList, newComment];
-
     //再リロード防止
     e.preventDefault();
 
@@ -62,8 +64,32 @@ const Article = () => {
     } catch(error) {
       return console.error(error);
     }
+    
+    router.push(`/article/${articleId}?id=${articleId}`);
+    router.refresh();
+  };
 
-    setCommentList(nowCommentList);
+  const deleteComment = async (comment_id) => {
+    try {
+      await axios.delete(`http://localhost/api/deleteComment/${comment_id}`, {withCredentials: true});
+    } catch(error) {
+      console.error(error);
+    }
+
+    setCommentList(
+      commentList.filter((comment, index) => (comment.id !== comment_id))
+    );
+  };
+
+  const handleDeleteComment = async (comment_id) => {
+    //再リロード防止
+    // e.preventDefault();
+
+    try {
+      await deleteComment(comment_id);
+    } catch(error) {
+      return console.error(error);
+    }
 
     router.push(`/article/${articleId}?id=${articleId}`);
     router.refresh();
@@ -169,7 +195,7 @@ const Article = () => {
                 <div className="card-footer">
                   &nbsp;
                   <span className="date-posted">{comment.created_at}</span>
-                  <span className="mod-options">
+                  <span className="mod-options" onClick={() => {handleDeleteComment(comment.id)}}>
                     <i className="ion-trash-a"></i>
                   </span>
                 </div>
