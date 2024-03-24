@@ -41,6 +41,22 @@ const Editor = () => {
     router.refresh();
   };
 
+  const deleteTag = async (article_id, tag_id) => {
+    //axios
+    await axios.delete(`http://localhost/api/tag-delete/${article_id}&${tag_id}`, {withCredentials: true});
+  };
+
+  const handleDeleteTag = async (article_id, tag_id) => {
+    //再リロード防止
+    // e.preventDefault();
+
+    await deleteTag(article_id, tag_id);
+
+    //リダイレクト
+    router.push(`/editor/edit?id=${article_id}`);
+    router.refresh();
+  };
+
   if (error) return <div>エラーです</div>;
   if(isLoading) return <div>読み込み中...</div>;
 
@@ -91,7 +107,9 @@ const Editor = () => {
                   />
                   <div className="tag-list">
                     {data?.tags.map((tag, index) => (
-                      <span className="tag-default tag-pill" key={index}> <i className="ion-close-round"></i> {tag.name} </span>
+                      <span className="tag-default tag-pill" key={index} onClick={() => {handleDeleteTag(data?.article.id, tag.id)}}>
+                        <i className="ion-close-round"></i> {tag.name}
+                      </span>
                     ))}
                   </div>
                 </fieldset>
